@@ -9,6 +9,10 @@ const Bing = require('node-bing-api')({ accKey: config.bing.api_key });
 
 class ImageSearchProvider {
     execute(input) {
+        const searchKeyword = input.keyword;
+        if (input.style) { 
+            searchKeyword = searchKeyword + ' ' + input. style;
+        }
         return Promise((resolve, reject) => {            
             search.cse.list({
                 auth: config.google.api_key,
@@ -16,11 +20,11 @@ class ImageSearchProvider {
                 fileType: 'jpg',
                 imgSize: 'xxlarge',
                 searchType: 'image',
-                q: input.keyword
+                q: searchKeyword
             }, function (err, result) {
                 if (err) {
                     //Most probably free usage ended switch to bing
-                    Bing.images(input.keyword, {
+                    Bing.images(searchKeyword, {
                         imageFilters: {
                             size: 'large'
                         }
