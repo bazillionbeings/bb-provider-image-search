@@ -1,5 +1,5 @@
 {
-  "name": "bb-provider-search-image",
+  "name": "bb-provider-image-search",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bazillionbeings/bb-provider-search-image.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bazillionbeings/bb-provider-search-image/issues"
+  },
+  "homepage": "https://github.com/bazillionbeings/bb-provider-search-image#readme"
 }
