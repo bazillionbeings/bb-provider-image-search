@@ -13,7 +13,7 @@ class ImageSearchProvider {
         if (input.style) { 
             searchKeyword = searchKeyword + ' ' + input. style;
         }
-        return Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {            
             search.cse.list({
                 auth: config.google.api_key,
                 cx: config.google.cx,
