@@ -31,7 +31,15 @@ class ImageSearchProvider {
                     }, function (error, res, body) {
                         if (error) reject(error)
                         else {
-                            resolve(body.d.results[0].MediaUrl);
+                            if (!body.d || 
+                            !body.d.results || 
+                            !body.d.results.length || 
+                            !body.d.results[0] || 
+                            !body.d.results[0].MediaUrl) {
+                                reject('no_result');
+                            } else {
+                                resolve(body.d.results[0].MediaUrl);
+                            }                            
                         }
                     });
                 }
