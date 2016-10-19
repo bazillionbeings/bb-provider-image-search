@@ -8,6 +8,30 @@ const search = google.customsearch('v1');
 const Bing = require('node-bing-api')({ accKey: config.bing.api_key });
 
 class ImageSearchProvider {
+
+    _bingSearch(input) {
+        return new Promise((resolve, reject) => {
+            Bing.images(searchKeyword, {
+                imageFilters: {
+                    size: 'large'
+                }
+            }, function (error, res, body) {
+                if (error) resolve(config.default_url);
+                else {
+                    if (!body.d || 
+                    !body.d.results || 
+                    !body.d.results.length || 
+                    !body.d.results[0] || 
+                    !body.d.results[0].MediaUrl) {
+                        resolve(config.default_url);
+                    } else {
+                        resolve(body.d.results[0].MediaUrl);
+                    }                            
+                }
+            });
+        });        
+    }
+
     execute(input) {
         const searchKeyword = input.keyword;
         if (input.style) { 
@@ -21,30 +45,17 @@ class ImageSearchProvider {
                 imgSize: 'xxlarge',
                 searchType: 'image',
                 q: searchKeyword
-            }, function (err, result) {
+            }, (err, result) => {
                 if (err) {
                     //Most probably free usage ended switch to bing
-                    Bing.images(searchKeyword, {
-                        imageFilters: {
-                            size: 'large'
-                        }
-                    }, function (error, res, body) {
-                        if (error) reject(error)
-                        else {
-                            if (!body.d || 
-                            !body.d.results || 
-                            !body.d.results.length || 
-                            !body.d.results[0] || 
-                            !body.d.results[0].MediaUrl) {
-                                reject('no_result');
-                            } else {
-                                resolve(body.d.results[0].MediaUrl);
-                            }                            
-                        }
-                    });
+                    return this._bingSearch(input);
                 }
-                else {                    
-                    resolve(result.items[0].link);
+                else {
+                    if (result.items && result.items.length > 0 && result.items[0].link) {
+                        resolve(result.items[0].link);
+                    } else {
+                        return this._bingSearch(input);
+                    }                    
                 }
             });
         });
