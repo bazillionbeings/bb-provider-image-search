@@ -10,6 +10,7 @@ const Bing = require('node-bing-api')({ accKey: config.bing.api_key });
 class ImageSearchProvider {
 
     _bingSearch(input) {
+        let searchKeyword = input.keyword;
         return new Promise((resolve, reject) => {
             Bing.images(searchKeyword, {
                 imageFilters: {
