@@ -49,7 +49,25 @@ class ImageSearchProvider {
             }, (err, result) => {
                 if (err) {
                     //Most probably free usage ended switch to bing
-                    return this._bingSearch(input);
+                    // return this._bingSearch(input);
+                    Bing.images(searchKeyword, {
+                        imageFilters: {
+                            size: 'large'
+                        }
+                    }, function (error, res, body) {
+                        if (error) resolve(config.default_url);
+                        else {
+                            if (!body.d || 
+                            !body.d.results || 
+                            !body.d.results.length || 
+                            !body.d.results[0] || 
+                            !body.d.results[0].MediaUrl) {
+                                resolve(config.default_url);
+                            } else {
+                                resolve(body.d.results[0].MediaUrl);
+                            }                            
+                        }
+                    });
                 }
                 else {
                     if (result.items && result.items.length > 0 && result.items[0].link) {
