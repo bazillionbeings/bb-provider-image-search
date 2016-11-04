@@ -33,7 +33,7 @@ class ImageSearchProvider {
     }
 
     execute(input) {
-        const searchKeyword = input.keyword;
+        let searchKeyword = input.keyword;
         if (input.style) { 
             searchKeyword = searchKeyword + ' ' + input. style;
         }
@@ -64,3 +64,5 @@ class ImageSearchProvider {
 
 
 module.exports = ImageSearchProvider;
+
+new ImageSearchProvider().execute({keyword: 'rocketship'});
